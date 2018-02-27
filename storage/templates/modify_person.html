@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Modify person</title>
+    <style>
+        div {float: left; padding: 15px; height: 250px; width: 255px; border: solid black 1px}
+        input {float: right}
+    </style>
+</head>
+<body>
+    <div>
+        <h2>Change personals</h2>
+        <form action="#" method="POST">
+            <label>First Name:
+                <input type="text" name="first_name" value="{{ person.first_name }}">
+            </label><br><br>
+            <label>Last Name:
+                <input type="text" name="last_name" value="{{ person.last_name }}">
+            </label><br><br>
+            <label>Description:
+                <input type="text" name="description" value="{{ person.description }}">
+            </label>
+            <label><br><br>
+                <input type="submit" value="Change">
+            </label>
+            {% csrf_token %}
+        </form>
+    </div>
+    {% for address in person.addresses.all %}
+        <div>
+            <h2>Change address</h2>
+            <form action="/{{ address.id }}/ModifyAddress" method="POST">
+                <label>City:
+                    <input type="text" name="city" value="{{ address.city }}">
+                </label><br><br>
+                <label>Street:
+                    <input type="text" name="street" value="{{ address.street }}">
+                </label><br><br>
+                <label>Number:
+                    <input type="number" name="house_number" value="{{ address.house_number }}">
+                </label><br><br>
+                <label>Flat:
+                    <input type="number" name="flat_number" value="{{ address.flat_number }}">
+                </label><br><br>
+                <label>
+                    <input type="submit" value="Change">
+                </label>
+                {% csrf_token %}
+            </form>
+        </div>
+    {% endfor %}
+    {% for number in person.numbers.all %}
+        <div>
+            <form action="/{{ number.id }}/ModifyNumber" method="POST">
+                <label>
+                    <input type="number" name="number" value="{{ number.number }}">
+                </label>
+                <label>
+                    <input type="text" name="number_type" value="{{ number.number_type }}">
+                </label>
+                <label>
+                    <input type="submit" value="Change">
+                </label>
+                {% csrf_token %}
+            </form>
+        </div>
+    {% endfor %}
+    {% for email in person.emails.all %}
+        <div>
+            <form action="/{{ email.id }}/ModifyEmail" method="POST">
+                <label>
+                    <input type="email" name="email" value="{{ email.address }}">
+                </label>
+                <label>
+                    <input type="text" name="email_type" value="{{ email.email_type }}">
+                </label>
+                <label>
+                    <input type="submit" value="Change">
+                </label>
+                {% csrf_token %}
+            </form>
+        </div>
+    {% endfor %}
+    <div>
+    <h2>Add address</h2>
+    <form action="/{{ person.id }}/addAddress" method="POST">
+        <label>City:
+            <input type="text" name="city">
+        </label><br><br>
+        <label>Street:
+            <input type="text" name="street">
+        </label><br><br>
+        <label>Number:
+            <input type="number" name="number">
+        </label><br><br>
+        <label>Flat:
+            <input type="number" name="flat">
+        </label><br><br>
+        <label>
+            <input type="submit" value="Add">
+        </label>
+        {% csrf_token %}
+    </form>
+    </div>
+    <div>
+        <h2>Add phone number</h2>
+        <form action="/{{ person.id }}/addNumber" method="POST">
+            <label>Number:
+                <input type="number" name="number">
+            </label><br><br>
+            <label>Type:
+                <input type="text" name="type">
+            </label><br><br>
+            <label>
+                <input type="submit" value="Add">
+            </label>
+            {% csrf_token %}
+        </form>
+    </div>
+    <div>
+        <h2>Add e-mail address</h2>
+        <form action="/{{ person.id }}/addEmail" method="POST">
+            <label>Address:
+                <input type="email" name="email">
+            </label><br><br>
+            <label>Type:
+                <input type="text" name="type">
+            </label><br><br>
+            <label>
+                <input type="submit" value="Add">
+            </label>
+            {% csrf_token %}
+        </form>
+    </div>
+    <a href="/"><input type="button" value="Back"></a>
+</body>
+</html>

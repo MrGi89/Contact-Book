@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Details</title>
+</head>
+<body>
+    <h2>{{ person.first_name }} {{ person.last_name }}</h2>
+    <p>{{ person.description }}</p>
+    <br>
+    <h2>Addresses:</h2>
+    {% for address in person.addresses.all %}
+        <ul>
+            <li>{{ address.street }} {{ address.house_number }}/{{ address.flat_number }}</li>
+            <li>{{ address.city }}</li>
+        </ul>
+    {% endfor %}
+    <br>
+    <h2>Contacts:</h2>
+    <ul>
+        {% for contact in person.numbers.all %}
+            <li>{{ contact.get__number_type__display }}: {{ contact.number }}</li>
+        {% endfor %}
+    </ul>
+    <ul>
+        {% for contact in person.emails.all %}
+            <li>{{ contact.get__email_type__display }}: {{ contact.address }}</li>
+        {% endfor %}
+    </ul>
+    <br>
+    <a href="/"><input type="button" value="Back"></a>
+    <a href="/modify/{{ person.id }}"><input type="button" value="Edit"></a>
+</body>
+</html>
