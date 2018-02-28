@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Change group</title>
+</head>
+<body>
+    <h2>Change group</h2>
+    <form action="#" method="POST">
+        <label>Name:
+            <input type="text" name="name" value={{ group.name }}>
+        </label>
+        <label>Description:
+            <input type="text" name="description" value={{ group.description }}>
+        </label>
+        <br><br>
+        <label>
+            <a href="/groups"><input type="button" value="Back"></a>
+            <input type="submit" value="Change">
+        </label>
+        {% csrf_token %}
+    </form>
+</body>
+</html>

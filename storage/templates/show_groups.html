@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Groups</title>
+</head>
+<body>
+    <h2>Groups</h2>
+    {% for group in groups %}
+        <h3>{{ group.name }}</h3>
+        <p>{{ group.description }}</p>
+        <ol>
+            {% for member in group.members.all %}
+                <li>{{ member.first_name }} {{ member.last_name }}
+                    <a href="/groups/deleteMember/{{ group.id }}/{{ member.id }}">
+                        <input type="button" name="action" value="Delete from group">
+                    </a>
+                </li>
+            {% endfor %}
+        </ol>
+        <a href="/groups/addMembers/{{ group.id }}"><input type="button" value="Add members"></a>
+        <a href="/groups/modify/{{ group.id }}"><input type="button" value="Change group"></a>
+        <a href="/groups/delete/{{ group.id }}"><input type="button" value="Delete group"></a>
+    {% endfor %}
+    <hr>
+    <h2>Add new group</h2>
+    <form action="#" method="POST">
+        <label>Name:
+            <input type="text" name="name">
+        </label>
+        <label>Description:
+            <input type="text" name="description">
+        </label>
+        <label>
+            <input type="submit" value="Add">
+        </label>
+        {% csrf_token %}
+    </form><br>
+    <a href="/"><input type="button" value="Back"></a>
+</body>
+</html>

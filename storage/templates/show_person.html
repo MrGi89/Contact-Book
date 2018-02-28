@@ -19,12 +19,12 @@
     <h2>Contacts:</h2>
     <ul>
         {% for contact in person.numbers.all %}
-            <li>{{ contact.get__number_type__display }}: {{ contact.number }}</li>
+            <li>{{ contact.get_number_type_display }}: {{ contact.number }}</li>
         {% endfor %}
     </ul>
     <ul>
         {% for contact in person.emails.all %}
-            <li>{{ contact.get__email_type__display }}: {{ contact.address }}</li>
+            <li>{{ contact.get_email_type_display }}: {{ contact.address }}</li>
         {% endfor %}
     </ul>
     <br>

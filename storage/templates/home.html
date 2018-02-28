@@ -10,9 +10,13 @@
         <div style="border: solid black 1px; width: 200px; padding: 15px" >
             <h2 style="text-align: left"><a href="/show/{{ person.id }}" style="text-decoration: none">
                 {{ person.first_name }} {{ person.last_name }}</a></h2>
+            <a href="/groups/addToGroups/{{ person.id }}"><input type="button" value="Add to groups"></a>
             <a href="/modify/{{ person.id }}"><input type="button" value="edit"></a>
             <a href="/delete/{{ person.id }}"><input type="button" value="delete"></a>
         </div>
     {% endfor %}
+    <br>
+    <a href="/new/">Add new person</a>
+    <a href="/groups/">Show groups</a>
 </body>
 </html>

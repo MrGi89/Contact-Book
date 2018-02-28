@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add user to group</title>
+</head>
+<body>
+    <h2>User is member of groups:</h2>
+    <ol>
+        {% for group in belong %}
+            <li>{{ group.name }}</li>
+        {% endfor %}
+    </ol>
+    <form action="#" method="POST">
+        <label>
+            <h2>Choose group you want to add the user to:</h2>
+            {% for group in not_belong %}
+                <input type="checkbox" name="group" value={{ group.id }}>{{ group.name }}
+                <br>
+            {% endfor %}
+        </label><br>
+        <label>
+            <input type="submit" name="action" value="Back">
+            <input type="submit" name="action" value="Add to group">
+            <input type="submit" name="action" value="Add new group">
+        </label>
+        {% csrf_token %}
+    </form>
+</body>
+</html>

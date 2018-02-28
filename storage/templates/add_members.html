@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h2>Actual members:</h2>
+    <ol>
+        {% for person in belong %}
+            <li>{{ person.first_name }} {{ person.last_name }}</li>
+        {% endfor %}
+    </ol>
+    <form action="#" method="POST">
+        <label>
+            <h2>Choose members to add:</h2>
+            {% for person in not_belong %}
+                <input type="checkbox" name="member" value={{ person.id }}>{{ person.first_name }} {{ person.last_name }}
+                <br>
+            {% endfor %}
+        </label><br>
+        <label>
+            <input type="submit" name="action" value="Back">
+            <input type="submit" name="action" value="Add">
+        </label>
+        {% csrf_token %}
+    </form>
+</body>
+</html>

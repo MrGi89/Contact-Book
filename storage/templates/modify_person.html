@@ -4,11 +4,17 @@
     <meta charset="UTF-8">
     <title>Modify person</title>
     <style>
+        h1 {text-align: center}
         div {float: left; padding: 15px; height: 250px; width: 255px; border: solid black 1px}
-        input {float: right}
+        input, select {float: right;}
+        .button {width: 173px}
+        .add {clear: both}
+        #back {display: block; clear: both; padding: 10px 0px;}
+        #back input {float: left;}
     </style>
 </head>
 <body>
+    <h1>Edit Person</h1>
     <div>
         <h2>Change personals</h2>
         <form action="#" method="POST">
@@ -20,9 +26,10 @@
             </label><br><br>
             <label>Description:
                 <input type="text" name="description" value="{{ person.description }}">
-            </label>
-            <label><br><br>
-                <input type="submit" value="Change">
+            </label><br><br>
+            <label>
+                <input type="submit" name='action' value="Delete">
+                <input type="submit" name= 'action' value="Change">
             </label>
             {% csrf_token %}
         </form>
@@ -30,7 +37,7 @@
     {% for address in person.addresses.all %}
         <div>
             <h2>Change address</h2>
-            <form action="/{{ address.id }}/ModifyAddress" method="POST">
+            <form action="/{{ address.id }}/modifyAddress" method="POST">
                 <label>City:
                     <input type="text" name="city" value="{{ address.city }}">
                 </label><br><br>
@@ -44,7 +51,8 @@
                     <input type="number" name="flat_number" value="{{ address.flat_number }}">
                 </label><br><br>
                 <label>
-                    <input type="submit" value="Change">
+                    <input type="submit" name='action' value="Delete">
+                    <input type="submit" name='action' value="Change">
                 </label>
                 {% csrf_token %}
             </form>
@@ -52,15 +60,39 @@
     {% endfor %}
     {% for number in person.numbers.all %}
         <div>
-            <form action="/{{ number.id }}/ModifyNumber" method="POST">
-                <label>
+            <h2>Change phone number</h2>
+            <form action="/{{ number.id }}/modifyNumber" method="POST">
+                <label>Number:
                     <input type="number" name="number" value="{{ number.number }}">
-                </label>
+                </label><br><br>
+                <label>Type:
+                    <select class="button" name="option">
+                        {% if number.number_type == 1 %}
+                            <option value="1">Home phone</option>
+                            <option value="2">Business phone</option>
+                            <option value="3">Mobile phone</option>
+                            <option value="4">Other</option>
+                        {% elif number.number_type == 2 %}
+                            <option value="2">Business phone</option>
+                            <option value="1">Home phone</option>
+                            <option value="3">Mobile phone</option>
+                            <option value="4">Other</option>
+                        {% elif number.number_type == 3 %}
+                            <option value="3">Mobile phone</option>
+                            <option value="1">Home phone</option>
+                            <option value="2">Business phone</option>
+                            <option value="4">Other</option>
+                        {% elif number.number_type == 4 %}
+                            <option value="4">Other</option>
+                            <option value="1">Home phone</option>
+                            <option value="2">Business phone</option>
+                            <option value="3">Mobile phone</option>
+                        {% endif %}
+                    </select>
+                </label><br><br>
                 <label>
-                    <input type="text" name="number_type" value="{{ number.number_type }}">
-                </label>
-                <label>
-                    <input type="submit" value="Change">
+                    <input type="submit" name='action' value="Delete">
+                    <input type="submit" name='action' value="Change">
                 </label>
                 {% csrf_token %}
             </form>
@@ -68,21 +100,37 @@
     {% endfor %}
     {% for email in person.emails.all %}
         <div>
-            <form action="/{{ email.id }}/ModifyEmail" method="POST">
-                <label>
+            <h2>Change e-mail address</h2>
+            <form action="/{{ email.id }}/modifyEmail" method="POST">
+                <label>Address:
                     <input type="email" name="email" value="{{ email.address }}">
-                </label>
+                </label><br><br>
+                <label>Type:
+                    <select class="button" name="option">
+                        {% if email.email_type == 1 %}
+                            <option value="1">Home phone</option>
+                            <option value="2">Business phone</option>
+                            <option value="3">Other</option>
+                        {% elif email.email_type == 2 %}
+                            <option value="2">Business phone</option>
+                            <option value="1">Home phone</option>
+                            <option value="3">Other</option>
+                        {% elif email.email_type == 3 %}
+                            <option value="3">Other</option>
+                            <option value="1">Home phone</option>
+                            <option value="2">Business phone</option>
+                        {% endif %}
+                    </select>
+                </label><br><br>
                 <label>
-                    <input type="text" name="email_type" value="{{ email.email_type }}">
-                </label>
-                <label>
-                    <input type="submit" value="Change">
+                    <input type="submit" name='action' value="Delete">
+                    <input type="submit" name='action' value="Change">
                 </label>
                 {% csrf_token %}
             </form>
         </div>
     {% endfor %}
-    <div>
+    <div class="add">
     <h2>Add address</h2>
     <form action="/{{ person.id }}/addAddress" method="POST">
         <label>City:
@@ -110,7 +158,12 @@
                 <input type="number" name="number">
             </label><br><br>
             <label>Type:
-                <input type="text" name="type">
+                <select class="button" name="option">
+                    <option value="1">Home phone</option>
+                    <option value="2">Business phone</option>
+                    <option value="3">Mobile phone</option>
+                    <option value="4">Other</option>
+                </select>
             </label><br><br>
             <label>
                 <input type="submit" value="Add">
@@ -125,7 +178,11 @@
                 <input type="email" name="email">
             </label><br><br>
             <label>Type:
-                <input type="text" name="type">
+                <select class="button" name="option">
+                    <option value="1">Home</option>
+                    <option value="2">Business</option>
+                    <option value="3">Other</option>
+                </select>
             </label><br><br>
             <label>
                 <input type="submit" value="Add">
@@ -133,6 +190,6 @@
             {% csrf_token %}
         </form>
     </div>
-    <a href="/"><input type="button" value="Back"></a>
+    <a id="back" href="/"><input type="button" value="Back"></a>
 </body>
 </html>
