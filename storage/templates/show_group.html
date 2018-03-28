@@ -36,11 +36,6 @@
             width: 15%;
             padding: 10px;
         }
-        #sidebar li{
-            padding: 5px;
-            text-align: left;
-            text-decoration: none;
-        }
         #content {
             float: left;
             min-height: 500px;
@@ -50,22 +45,6 @@
             align-items: flex-start;
             border-left: solid black 1px;
         }
-        #content h1, h2, p {
-            margin-left: 20px;
-        }
-        #content form {
-            float: left;
-            width: 30%;
-            margin: 20px;
-            padding: 20px;
-        }
-        #content input {
-            width: 100%;
-            box-sizing: border-box;
-            padding: 5px 10px;
-            margin: 8px 0;
-            border: solid black 1px;
-            border-radius: 4px;
     </style>
 </head>
 <body>
@@ -81,25 +60,26 @@
     </nav>
     <div id="sidebar">
         <h2>Choose from existing groups:</h2>
-        {% for group in groups %}
+        {% for item in groups %}
             <p><a href="/group/{{ group.id }}">{{ group.name }}</a></p>
         {% endfor %}
         <br>
     </div>
     <div id="content">
-        <form action="#" method="POST">
-            <h2>Or add a new one:</h2>
-            <label>Name:
-                <input type="text" name="name">
-            </label>
-            <label>Description:
-                <input type="text" name="description">
-            </label>
-            <label>
-                <input type="submit" value="Add">
-            </label>
-            {% csrf_token %}
-        </form>
+        <h3>{{ group.name }}</h3>
+        <p>{{ group.description }}</p>
+        {% for member in group.members.all %}
+            <ol>
+                <li>{{ member.first_name }} {{ member.last_name }}
+                    <a href="/groups/deleteMember/{{ group.id }}/{{ member.id }}">
+                        <input type="button" name="action" value="Delete from group">
+                    </a>
+                </li>
+            </ol>
+        <a href="/groups/addMembers/{{ group.id }}"><input type="button" value="Add members"></a>
+        <a href="/groups/modify/{{ group.id }}"><input type="button" value="Change group"></a>
+        <a href="/groups/delete/{{ group.id }}"><input type="button" value="Delete group"></a>
+        {% endfor %}
     </div>
     <footer>
         <h3>My first application</h3>

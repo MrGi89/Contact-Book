@@ -1,34 +1,214 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Details</title>
+    <style>
+        body {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            font: 15px/1.5 Arial;
+        }
+        .container {
+            height: 100%;
+            width: 98%;
+            margin: auto;
+            overflow: hidden;
+        }
+        .highlight {
+            font-weight: bolder;
+            color: aqua;
+        }
+        ul {
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            padding: 20px;
+            min-height: 60px;
+            background-color: black;
+            color: white;
+        }
+        header a {
+            text-decoration: none;
+            text-transform: uppercase;
+            color: white;
+        }
+        header li{
+            float: left;
+            display: inline;
+            padding: 0 20px 0 20px;
+        }
+        header #branding {
+            float: left;
+            font-size: 20px;
+        }
+        header #branding h1{
+            margin: 0;
+        }
+        header nav {
+            float: right;
+            margin-top: 20px;
+        }
+        header a:hover{
+            font-weight: bolder;
+            color: aqua;
+        }
+        #showcase {
+            height: 500px;
+        }
+        #showcase div{
+            float: left;
+            min-height: 100%;
+        }
+        div #sidebar {
+            width: 25%;
+            border-right: solid 1px black;
+            height: 100%;
+        }
+        div #sidebar a{
+            text-decoration: none;
+            color: black;
+            display: block;
+            padding: 20px;
+        }
+        div #sidebar p{
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            font-size: 16px;
+        }
+        div #sidebar a:hover{
+            background-color: black;
+            color: aqua;
+            font-weight: bolder;
+        }
+        div #content{
+            width: 60%;
+        }
+        div #top{
+            width: 100%;
+        }
+        div #top h2, div #top p{
+            display: block;
+            margin-right: auto;
+            margin-left: auto;
+            width: 300px;
+            text-align: center;
+        }
+        div #bottom{
+            width: 100%;
+            float: left;
+            clear: left;
+        }
+        div .box {
+            width: 49%;
+            float: left;
+        }
+        div .box h2{
+            display: block;
+            margin-right: auto;
+            margin-left: auto;
+            width: 100px;
+            text-align: center;
+        }
+        div .box li{
+            padding: 15px;
+            margin-left: 80px;
+        }
+
+
+
+
+        div #aside {
+            width: 10%;
+            float: right;
+            margin-right: 0;
+            padding-right: 0;
+        }
+        div #aside input{
+            width: 100%;
+            border: none;
+            padding: 20px;
+            font-size: 16px;
+            background-color: white;
+        }
+        div #aside input:hover{
+            background-color: black;
+            color: aqua;
+            font-weight: bolder;
+        }
+        footer {
+            background-color: black;
+            color: white;
+            min-height: 60px;
+            padding: 20px;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-    <h2>{{ person.first_name }} {{ person.last_name }}</h2>
-    <p>{{ person.description }}</p>
-    <br>
-    <h2>Addresses:</h2>
-    {% for address in person.addresses.all %}
-        <ul>
-            <li>{{ address.street }} {{ address.house_number }}/{{ address.flat_number }}</li>
-            <li>{{ address.city }}</li>
-        </ul>
-    {% endfor %}
-    <br>
-    <h2>Contacts:</h2>
-    <ul>
-        {% for contact in person.numbers.all %}
-            <li>{{ contact.get_number_type_display }}: {{ contact.number }}</li>
-        {% endfor %}
-    </ul>
-    <ul>
-        {% for contact in person.emails.all %}
-            <li>{{ contact.get_email_type_display }}: {{ contact.address }}</li>
-        {% endfor %}
-    </ul>
-    <br>
-    <a href="/"><input type="button" value="Back"></a>
-    <a href="/modify/{{ person.id }}"><input type="button" value="Edit"></a>
+    <header>
+        <div class="container">
+            <div id="branding">
+            <h1><span class="highlight">C</span>ontact <span class="highlight">B</span>ook</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="/">Show persons</a></li>
+                    <li><a href="/groups/">Show groups</a></li>
+                    <li><a href="/new/">Add new person</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <section id="showcase">
+        <div class="container">
+            <div id="sidebar">
+                {% for person in people %}
+                    <p><a href="/show/{{ person.id }}">{{ person.first_name }} {{ person.last_name }}</a></p>
+                {% endfor %}
+            </div>
+            <div id="content">
+                <div id="top">
+                    <h2>{{ person.first_name }} {{ person.last_name }}</h2>
+                    <p>{{ person.description }}</p>
+                </div>
+                <div id="bottom">
+                    <div class="box">
+                        <h2>Addresses:</h2>
+                        {% for address in person.addresses.all %}
+                            <ul>
+                                <li>{{ address.street }} {{ address.house_number }}/{{ address.flat_number }}, {{ address.city }}</li>
+                            </ul>
+                        {% endfor %}
+                    </div>
+                    <div class="box">
+                        <h2>Contacts:</h2>
+                        <ul>
+                            {% for contact in person.numbers.all %}
+                                <li>{{ contact.get_number_type_display }}: {{ contact.number }}</li>
+                            {% endfor %}
+                        </ul>
+                        <ul>
+                            {% for contact in person.emails.all %}
+                                <li>{{ contact.get_email_type_display }}: {{ contact.address }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div id="aside">
+                    <a href="/groups/addToGroups/{{ person.id }}"><input type="button" value="Add to groups"></a>
+                    <a href="/modify/{{ person.id }}"><input type="button" value="Edit person"></a>
+                    <a href="/delete/{{ person.id }}"><input type="button" value="Delete person"></a>
+            </div>
+        </div>
+    </section>
+    <footer>
+        <h3><span class="highlight">M</span>y <span class="highlight">F</span>irst
+            <span class="highlight">A</span>pplication &copy;</h3>
+    </footer>
 </body>
 </html>

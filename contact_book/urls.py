@@ -19,7 +19,7 @@ from django.conf.urls import url
 
 from storage.views import Home, AddPerson, ShowPerson, ModifyPerson, AddAddress, AddNumber, AddEmail, ModifyAddress\
     , ModifyNumber, ModifyEmail, DeletePerson, ShowGroups, AddMembers, AddToGroups, DeleteMember, ModifyGroup\
-    , DeleteGroup
+    , DeleteGroup, ShowGroup
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -35,6 +35,7 @@ urlpatterns = [
     url(r'^(?P<my_id>\d+)/modifyNumber$', ModifyNumber.as_view()),
     url(r'^(?P<my_id>\d+)/modifyEmail$', ModifyEmail.as_view()),
     url(r'^groups/$', ShowGroups.as_view()),
+    url(r'^group/(?P<group_id>\d+)$', ShowGroup.as_view()),
     url(r'^groups/addMembers/(?P<my_id>\d+)$', AddMembers.as_view()),
     url(r'^groups/addToGroups/(?P<my_id>\d+)$', AddToGroups.as_view()),
     url(r'^groups/deleteMember/(?P<group_id>\d+)/(?P<member_id>\d+)$', DeleteMember.as_view()),

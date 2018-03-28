@@ -9,10 +9,6 @@ class Home(View):
     def get(self, request):
         return render(request, 'home.html', {'people': Person.objects.all().order_by('last_name')})
 
-    def post(self, request):
-        if request.POST['option'] == 'edit':
-            raise Http404
-
 
 class AddPerson(View):
 
@@ -34,7 +30,8 @@ class AddPerson(View):
 class ShowPerson(View):
 
     def get(self, request, my_id):
-        return render(request, 'show_person.html', {'person': Person.objects.get(id=int(my_id))})
+        return render(request, 'show_person.html', {'people': Person.objects.all().order_by('last_name'),
+                                                    'person': Person.objects.get(id=int(my_id))})
 
 
 class ModifyPerson(View):
@@ -157,7 +154,7 @@ class ModifyAddress(View):
             if street:
                 address.street = street
             address.save()
-            return redirect('/show/{}'.format(address.person_address))
+            return redirect('/show/{}'.format(address.person_address.id))
         else:
             address.delete()
             return redirect('/show/{}'.format(address.person_address.id))
@@ -189,13 +186,13 @@ class ModifyEmail(View):
 
     def post(self, request, my_id):
         email = Email.objects.get(id=int(my_id))
-        address = request.POST.get('address')
-        email_type = request.POST.get('option')
-
+        user_address = request.POST.get('address')
+        email_type = int(request.POST.get('option'))
         if request.POST.get('action') == 'Change':
-            if address:
-                email.address = email
-            address.email_type = int(email_type)
+            if user_address:
+                email.address = user_address
+            email.email_type = email_type
+            email.save()
             return redirect('/show/{}'.format(email.person_email.id))
         else:
             email.delete()
@@ -215,6 +212,13 @@ class ShowGroups(View):
             return redirect('/groups/')
         else:
             return HttpResponse('Podaj dane')
+
+
+class ShowGroup(View):
+
+    def get(self, request, group_id):
+        return render(request, 'show_group.html', {'groups': Group.objects.all().order_by('name'),
+                                                   'group': Group.objects.get(id=int(group_id))})
 
 
 class AddMembers(View):
