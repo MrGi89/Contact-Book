@@ -1,0 +1,15 @@
+{% extends 'welcome.html' %}
+{% block content %}
+    <div class="container">
+        <div class="login">
+            <h2>Create your account</h2>
+            <form class="form" action="#" method="POST">
+                {{ form.as_p }}
+                <label>
+                    <input class="submit" type="submit" value="Save">
+                </label>
+                {% csrf_token %}
+            </form>
+        </div>
+    </div>
+{% endblock %}

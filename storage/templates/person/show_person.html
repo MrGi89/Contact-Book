@@ -1,0 +1,34 @@
+{% extends 'person/show_people.html' %}
+{% block content %}
+    <div class="container-div">
+        <div class="sidebar">
+                <a class="delta" href="{% url 'add_person' %}">Add new person</a>
+            {% for person in people %}
+                <a href="/show/{{ person.id }}">{{ person.first_name }} {{ person.last_name }}</a>
+            {% endfor %}
+        </div>
+        <div class="content">
+            <div class="test">
+                {% load static  %}
+                <img src=" {% static 'image/profile.jpg' %}">
+                <h1>{{ person.first_name }}  {{ person.last_name }}</h1>
+            </div>
+            <div>
+                <h2>aha</h2>
+            </div>
+
+            <div>
+                <h2>maha</h2>
+            </div>
+            <div>
+                <h2>daha</h2>
+            </div>
+            <div>
+                <h2>baha</h2>
+            </div>
+
+
+
+        </div>
+    </div>
+{% endblock %}

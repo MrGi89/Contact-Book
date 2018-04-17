@@ -1,0 +1,37 @@
+{% extends 'welcome.html' %}
+{% block content %}
+    <div class="container-div">
+        <div class="sidebar">
+            {% for person in people %}
+                <a href="/show/{{ person.id }}">{{ person.first_name }} {{ person.last_name }}</a>
+            {% empty %}
+                <a href="{% url 'add_person' %}">Add new person</a>
+            {% endfor %}
+        </div>
+        <div class="wrapper">
+            <div class="left">
+                <h1>{{ person.first_name }} {{ person.last_name }}</h1>
+                <h2>Add addresses</h2>
+                <form class="form" action="#" method="POST">
+                    {{ form }}
+                    <a href="{% url 'add_contacts' person.pk %}"><input class="submit" type="button" value="Skip"></a>
+                    <input class="submit" type="submit" value="Save">
+                    {% csrf_token %}
+                </form>
+            </div>
+            <div class="right">
+                <h2>Step 2</h2>
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt expedita, maxime?
+                    Ad doloribus enim eveniet ex expedita explicabo facere, illo illum natus nobis perferendis
+                    quaerat quasi quod ratione reiciendis repellat rerum sequi sit unde ut? Atque debitis itaque
+                    quia sequi.
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt expedita, maxime?
+                    Ad doloribus enim eveniet ex expedita explicabo facere, illo illum natus nobis perferendis
+                    quaerat quasi quod ratione reiciendis repellat rerum sequi sit unde ut? Atque debitis itaque
+                    quia sequi.
+                </p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

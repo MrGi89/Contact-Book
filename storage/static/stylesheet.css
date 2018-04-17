@@ -1,0 +1,260 @@
+/*GLOBALS*/
+
+a {
+    text-decoration: none;
+    color: white;
+}
+
+ul, h1, p {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font: 15px/1.5 Arial;
+}
+
+.highlight {
+    font-weight: bolder;
+    color: aqua;
+}
+
+.delta {
+    border-bottom: solid 1px black;
+    font-weight: bolder;
+    /*text-align: center;*/
+}
+
+
+/*HEADER*/
+
+
+
+.header {
+    padding: 20px;
+    min-height: 60px;
+    background-color: black;
+    color: white;
+}
+.navi a {
+    text-transform: uppercase;
+}
+
+.navi li{
+    display: inline;
+    padding: 0 20px 0 20px;
+}
+.branding {
+    float: left;
+    font-size: 20px;
+}
+nav {
+    float: right;
+    margin-top: 20px;
+}
+.header a:hover{
+    font-weight: bolder;
+    color: aqua;
+}
+
+/* CONTAINER-DIV */
+
+.container-div {
+    display: grid;
+    grid-template-columns: 20% 80%;
+    height: 584px;
+}
+
+
+.sidebar {
+    border-right: solid 1px black;
+    overflow-y: scroll;
+}
+.sidebar a {
+    display: grid;
+    padding: 20px;
+    color: black;
+    font-size: 16px;
+    /*text-align: center;*/
+}
+
+.sidebar a:hover{
+    background-color: black;
+    color: aqua;
+    font-weight: bolder;
+    text-transform: uppercase;
+
+}
+.content {
+    display: grid;
+    overflow-y: scroll;
+    padding: 30px;
+
+}
+.content > h2 {
+    align-self: center;
+    justify-self: center;
+
+}
+
+.test {
+    border: solid 1px black;
+}
+
+.test img {
+    width: 220px;
+    float: right;
+    border: solid 1px black;
+    border-radius: 20px ;
+}
+
+
+
+/* CONTAINER */
+
+
+
+.container{
+    display: grid;
+    padding: 50px;
+    margin: 0 100px 0 100px;
+    justify-items: center;
+    height: 484px;
+
+}
+
+
+
+
+
+/*WELCOME*/
+
+.content-wrapper {
+    display: grid;
+    grid-template-rows: minmax(242px, auto);
+}
+
+.up {
+    display: grid;
+    justify-items: center;
+    align-items: center;
+    font-size: 16px;
+
+}
+
+.up h1 {
+    font-size: 35px;
+
+}
+
+.down{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    justify-items: center;
+    align-items: center;
+    font-weight: bolder;
+
+}
+
+.nested img {
+    width: 70px;
+}
+
+/*LOGIN*/
+
+
+.login h2 {
+    text-align: center;
+    margin: 50px 0 50px 0;
+
+}
+
+
+
+
+
+
+
+/*ADD PERSON VIEW*/
+
+
+
+
+.wrapper {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    grid-auto-rows: minmax(200px, auto);
+    padding: 50px;
+
+}
+
+.left {
+    margin:0 0 0 50px;
+
+}
+
+.right {
+    margin:0 50px 0 0;
+
+}
+
+.form input, textarea, select {
+    background-color: white;
+    padding: 5px 10px;
+    margin: 5px 0 5px 0;
+    border: solid black 1px;
+    border-radius: 4px;
+    width: 400px;
+    height: 35px;
+    box-sizing: border-box;
+    font: 15px/1.5 Arial;
+
+}
+
+
+.form input, textarea::placeholder {
+    font: 15px/1.5 Arial;
+}
+.submit {
+    background-color: white;
+    font-size: 15px;
+    font-weight: bolder;
+    cursor: pointer;
+    
+}
+.submit:hover {
+    background-color: black;
+    font-weight: bolder;
+    color: aqua;
+    text-transform: uppercase;
+
+}
+
+
+/*#aside {*/
+    /*width: 10%;*/
+    /*float: right;*/
+    /*margin-right: 0;*/
+    /*padding-right: 0;*/
+/*}*/
+/*#aside input{*/
+    /*width: 100%;*/
+    /*border: none;*/
+    /*padding: 20px;*/
+    /*font-size: 16px;*/
+    /*background-color: white;*/
+/*}*/
+/*#aside input:hover{*/
+    /*background-color: black;*/
+    /*color: aqua;*/
+    /*font-weight: bolder;*/
+/*}*/
+
+footer {
+    background-color: black;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}

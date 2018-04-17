@@ -1,0 +1,14 @@
+{% extends 'welcome.html' %}
+{% block content %}
+    <div class="container-div">
+        <div class="sidebar">
+                <a class="delta" href="">Add new group</a>
+            {% for group in groups %}
+                <a href="/group/{{ group.id }}">{{ group.name }}</a>
+            {% endfor %}
+        </div>
+        <div class="content">
+                <h2>To see details, click on a specific group in the bar on the left</h2>
+        </div>
+    </div>
+{% endblock %}
