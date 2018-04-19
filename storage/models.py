@@ -4,7 +4,7 @@ from django.db import models
 class Person(models.Model):
     first_name = models.CharField(max_length=64, verbose_name='')
     last_name = models.CharField(max_length=64, verbose_name='')
-    description = models.TextField(null=True, verbose_name='', blank=True)
+    description = models.TextField(max_length=200, null=True, verbose_name='', blank=True)
 
 
 class Address(models.Model):
@@ -15,7 +15,7 @@ class Address(models.Model):
     person_address = models.ForeignKey(Person, on_delete=models.CASCADE, related_name='addresses')
 
 
-TYPE = ((1, 'Home phone'), (2, 'Business phone'), (3, 'Mobile phone'), (4, 'Other'))
+TYPE = ((1, 'Home'), (2, 'Business'), (3, 'Mobile'), (4, 'Other'))
 
 
 class Phone(models.Model):
@@ -24,7 +24,7 @@ class Phone(models.Model):
     person_number = models.ForeignKey(Person, on_delete=models.CASCADE, related_name='numbers')
 
 
-EMAIL_TYPE = ((1, 'Home'), (2, 'Business'), (3, 'Other'))
+EMAIL_TYPE = ((1, 'Personal'), (2, 'Business'), (3, 'Other'))
 
 
 class Email(models.Model):

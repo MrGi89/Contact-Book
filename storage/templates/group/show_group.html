@@ -1,0 +1,28 @@
+{% extends 'welcome.html' %}
+{% block content %}
+    <div class="container-div">
+        <div class="sidebar">
+                <a class="delta" href="">Add new group</a>
+            {% for group in groups %}
+                <a href="{% url 'show_group' group.pk %}">{{ group.name }}</a>
+            {% endfor %}
+        </div>
+        <div class="content">
+            <div class="details">
+            </div>
+            <div>
+                <div>
+                    {% load static  %}
+                    <img class="profile_img" src=" {% static 'image/groups.jpg' %}">
+                </div>
+                <div class="sidebar-right">
+                    <a href="" class="first">Edit person</a>
+                    <a href="">Delete person</a>
+                    <a href="">Add phone</a>
+                    <a href="">Add address</a>
+                    <a href="" class="last">Add email</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,4 +1,4 @@
-from .models import Person
+from .models import Person, Group
 
 
 def people(request):
@@ -7,4 +7,11 @@ def people(request):
 
     return {
         'people': all_people,
+    }
+
+def groups(request):
+
+    all_groups = Group.objects.all().order_by('name')
+    return {
+        'groups': all_groups,
     }

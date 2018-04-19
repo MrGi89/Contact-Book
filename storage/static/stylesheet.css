@@ -27,6 +27,14 @@ body {
     /*text-align: center;*/
 }
 
+footer {
+    background-color: black;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+
 
 /*HEADER*/
 
@@ -59,7 +67,23 @@ nav {
     color: aqua;
 }
 
+
+/* CONTAINER */
+
+
+
+.container{
+    display: grid;
+    padding: 50px;
+    margin: 0 100px 0 100px;
+    justify-items: center;
+    height: 484px;
+
+}
+
+
 /* CONTAINER-DIV */
+
 
 .container-div {
     display: grid;
@@ -87,49 +111,131 @@ nav {
     text-transform: uppercase;
 
 }
-.content {
-    display: grid;
-    overflow-y: scroll;
-    padding: 30px;
 
-}
-.content > h2 {
+/* CONTAINER-DIV ELEMENTS */
+
+.info {
+    display: grid;
     align-self: center;
     justify-self: center;
 
 }
 
-.test {
-    border: solid 1px black;
-}
-
-.test img {
-    width: 220px;
-    float: right;
-    border: solid 1px black;
-    border-radius: 20px ;
-}
 
 
-
-/* CONTAINER */
-
-
-
-.container{
+.content {
     display: grid;
-    padding: 50px;
-    margin: 0 100px 0 100px;
-    justify-items: center;
-    height: 484px;
+    overflow-y: scroll;
+    padding: 25px;
+    grid-template-columns: 8fr 2fr;
 
 }
 
 
+/* PERSON/GROUP DETAILS SITE */
+
+
+.details {
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+
+.details h1 {
+    font-size: 40px;
+}
+
+.details h2 {
+    margin: 5px 0 5px 0;
+    padding: 0;
+
+}
+
+.sidebar-right {
+    display: grid;
+    align-items: center;
+    justify-items: center;
+}
+
+.name {
+    border-bottom: solid 2px black;
+    height: 120px;
+}
+
+
+.contacts {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-bottom: solid 2px black;
+    min-height: 160px;
+
+}
+
+.addresses {
+    min-height: 240px;
+}
+
+.address_container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+}
 
 
 
-/*WELCOME*/
+.profile_img {
+    width: 200px;
+    border: solid 1px black;
+    border-radius: 20px;
+    margin-bottom: 15px;
+}
+
+.menu {
+    width: 200px;
+    border: solid 1px black;
+    border-radius: 20px;
+
+}
+.menu a{
+    display: grid;
+    padding: 20px;
+    color: black;
+    font-size: 16px;
+    text-align: center;
+}
+
+.menu a:hover{
+    background-color: black;
+    color: aqua;
+    font-weight: bolder;
+    text-transform: uppercase;
+
+}
+
+.first:hover{
+    border-radius: 20px 20px 0 0;
+}
+
+.last:hover{
+    border-radius: 0 0 20px 20px;
+}
+
+.person_content{
+    display: grid;
+    justify-items: center;
+    align-items: center;
+
+}
+
+.person_content h2 {
+    margin-bottom: 25px;
+    text-align: center;
+}
+.person_form {
+    margin-bottom: 60px;
+}
+
+
+/* WELCOME SITE */
 
 .content-wrapper {
     display: grid;
@@ -172,33 +278,33 @@ nav {
 }
 
 
-
-
-
-
-
-/*ADD PERSON VIEW*/
-
-
+/* ADD NEW PERSON VIEW */
 
 
 .wrapper {
     display: grid;
-    grid-template-columns: 2fr 1fr;
-    grid-auto-rows: minmax(200px, auto);
-    padding: 50px;
-
+    grid-template-columns: 1fr 1fr;
+    justify-items: center;
 }
 
-.left {
-    margin:0 0 0 50px;
-
+.box1 {
+    display: grid;
+    grid-column: 1/3;
+    align-items: center;
 }
 
-.right {
-    margin:0 50px 0 0;
 
+.box3 {
+    width: 400px;
 }
+
+.wrapper h3{
+    text-align: center;
+}
+
+
+/* FORMS */
+
 
 .form input, textarea, select {
     background-color: white;
@@ -210,11 +316,15 @@ nav {
     height: 35px;
     box-sizing: border-box;
     font: 15px/1.5 Arial;
+    display: grid;
 
 }
 
+.form textarea {
+    height: 150px;
+}
 
-.form input, textarea::placeholder {
+.form input::placeholder, textarea::placeholder {
     font: 15px/1.5 Arial;
 }
 .submit {
@@ -224,6 +334,7 @@ nav {
     cursor: pointer;
     
 }
+
 .submit:hover {
     background-color: black;
     font-weight: bolder;
@@ -233,28 +344,3 @@ nav {
 }
 
 
-/*#aside {*/
-    /*width: 10%;*/
-    /*float: right;*/
-    /*margin-right: 0;*/
-    /*padding-right: 0;*/
-/*}*/
-/*#aside input{*/
-    /*width: 100%;*/
-    /*border: none;*/
-    /*padding: 20px;*/
-    /*font-size: 16px;*/
-    /*background-color: white;*/
-/*}*/
-/*#aside input:hover{*/
-    /*background-color: black;*/
-    /*color: aqua;*/
-    /*font-weight: bolder;*/
-/*}*/
-
-footer {
-    background-color: black;
-    color: white;
-    padding: 20px;
-    text-align: center;
-}

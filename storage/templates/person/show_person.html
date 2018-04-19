@@ -1,34 +1,54 @@
 {% extends 'person/show_people.html' %}
-{% block content %}
-    <div class="container-div">
-        <div class="sidebar">
-                <a class="delta" href="{% url 'add_person' %}">Add new person</a>
-            {% for person in people %}
-                <a href="/show/{{ person.id }}">{{ person.first_name }} {{ person.last_name }}</a>
-            {% endfor %}
-        </div>
+{% block inside %}
         <div class="content">
-            <div class="test">
-                {% load static  %}
-                <img src=" {% static 'image/profile.jpg' %}">
-                <h1>{{ person.first_name }}  {{ person.last_name }}</h1>
+            {% block details %}
+                <div class="details">
+                    <div class="name">
+                        <h1>{{ person.first_name }} {{ person.last_name }}</h1>
+                        <p>{{ person.description }}</p>
+                    </div>
+                    <div class="contacts">
+                        <div>
+                            <h2>E-mail addresses</h2>
+                            {% for email in person.emails.all|dictsort:"email_type" %}
+                                <p>{{ email.get_email_type_display }}: {{ email.address }}</p>
+                            {% endfor %}
+                        </div>
+                        <div>
+                            <h2>Phone numbers</h2>
+                            {% for phone in person.numbers.all|dictsort:"number_type" %}
+                                <p>{{ phone.get_number_type_display }}: {{ phone.number }}</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="addresses">
+                        <div>
+                            <h2>Addresses</h2>
+                        </div>
+                        <div class="address_container">
+                            {% for address in person.addresses.all %}
+                            <div>
+                                <p>Street: {{ address.street }}</p>
+                                <p>House: {{ address.house_number }}</p>
+                                <p>Flat: {{ address.flat_number }}</p>
+                                <p>City: {{ address.city }}</p>
+                            </div>
+                        {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            {% endblock details %}
+            <div class="sidebar-right">
+                <div>
+                    {% load static  %}
+                    <img class="profile_img" src=" {% static 'image/profile.jpg' %}">
+                </div>
+                <div class="menu">
+                    <a href="{% url 'add_address' person.pk %}" class="first">Add contact details</a>
+                    <a href="">Add person to group</a>
+                    <a href="{% url 'update_person' person.pk %}">Edit person</a>
+                    <a href="{% url 'delete_person' person.pk %}" class="last">Delete person</a>
+                </div>
             </div>
-            <div>
-                <h2>aha</h2>
-            </div>
-
-            <div>
-                <h2>maha</h2>
-            </div>
-            <div>
-                <h2>daha</h2>
-            </div>
-            <div>
-                <h2>baha</h2>
-            </div>
-
-
-
         </div>
-    </div>
-{% endblock %}
+{% endblock inside %}

@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, HttpResponse
 from django.urls import reverse_lazy, reverse
 from django.views import View
-from django.views.generic import CreateView
+from django.views.generic import CreateView, UpdateView, DeleteView
 
 
 from .forms import LoginForm, RegisterForm, AddPersonForm, AddAddressForm, AddPhoneForm, AddEmailForm
@@ -72,7 +72,7 @@ class LoginView(View):
                 user = authenticate(username=user_search[0].username, password=password)
                 if user is not None:
                     login(request, user)
-                    return HttpResponseRedirect(reverse('home'))
+                    return HttpResponseRedirect(reverse('show_people'))
         form.add_error('email', 'Email or password is incorrect. Please try again')
         return render(request, template_name='user/login.html', context={'form': form})
 
@@ -177,96 +177,30 @@ class ShowPersonView(View):
         return render(request, template_name='person/show_person.html', context={'person': person})
 
 
-class ModifyPerson(View):
+class UpdatePersonView(UpdateView):
 
-    def get(self, request, my_id):
-        return render(request, 'modify_person.html', {'person': Person.objects.get(id=int(my_id))})
+    model = Person
+    fields = '__all__'
+    template_name = 'person/update_person.html'
+    
+    def form_valid(self, form):
+        instance = form.save(commit=False)
+        self.person_id = instance.id
+        instance.save()
 
-    def post(self, request, my_id):
-        person = Person.objects.get(id=int(my_id))
-        first_name = request.POST.get('first_name')
-        last_name = request.POST.get('last_name')
-        description = request.POST.get('description')
-        if request.POST.get('submit') == 'change':
-            if first_name:
-                person.first_name = first_name
-            if last_name:
-                person.last_name = last_name
-            if description:
-                person.description = description
-            else:
-                person.description = ''
-            person.save()
-            return redirect('/show/{}'.format(my_id))
-        else:
-            person.delete()
-            return redirect('/show/{}'.format(my_id))
+        return redirect(self.get_success_url(person_id=self.person_id))
+
+    def get_success_url(self, **kwargs):
+        person = Person.objects.get(pk=self.kwargs.get('pk'))
+        if kwargs is not None:
+            return reverse_lazy('show_person', kwargs={'person_id': person.id})
 
 
-class DeletePerson(View):
+class DeletePersonView(DeleteView):
 
-    def get(self, request, my_id):
-        person = Person.objects.get(id=int(my_id))
-        person.delete()
-        return redirect('/')
-        
-
-class AddAddress(View):
-
-    def post(self, request, my_id):
-        person = Person.objects.get(id=int(my_id))
-        city = request.POST.get('city')
-        street = request.POST.get('street')
-        number = request.POST.get('number')
-        flat = request.POST.get('flat')
-        if city and street and number and flat:
-            try:
-                (number, flat) = (int(number), int(flat))
-                Address.objects.create(city=city, street=street, house_number=number
-                                       , flat_number=flat, person_address=person)
-                return redirect('/show/{}'.format(my_id))
-            except ValueError:
-                return HttpResponse('Podałeś błędne dane')
-        elif city and street and number:
-            try:
-                number = int(number)
-                Address.objects.create(city=city, street=street, house_number=number
-                                       , person_address=person)
-                return redirect('/show/{}'.format(my_id))
-            except ValueError:
-                return HttpResponse('Podałeś błędne dane')
-        else:
-            return HttpResponse('Nie podałeś żadnych danych')
-
-
-class AddNumber(View):
-
-    def post(self, request, my_id):
-        person = Person.objects.get(id=int(my_id))
-        number = request.POST.get('number')
-        number_type = request.POST.get('option')
-        if number:
-            try:
-                number = int(number)
-                Phone.objects.create(number=number, number_type=int(number_type), person_number=person)
-                return redirect('/show/{}'.format(my_id))
-            except ValueError:
-                return HttpResponse('Podałeś błędne dane')
-        else:
-            return HttpResponse('Nie podałeś żadnych danych')
-
-
-class AddEmail(View):
-
-    def post(self, request, my_id):
-        person = Person.objects.get(id=int(my_id))
-        email = request.POST.get('email')
-        email_type = request.POST.get('option')
-        if email:
-            Email.objects.create(address=email, email_type=int(email_type), person_email=person)
-            return redirect('/show/{}'.format(my_id))
-        else:
-            return HttpResponse('Nie podałeś żadnych danych')
+    model = Person
+    template_name = 'person/delete_person.html'
+    success_url = reverse_lazy('show_people')
 
 
 class ModifyAddress(View):
@@ -346,24 +280,15 @@ class ShowGroupsView(View):
 
     def get(self, request):
 
-        groups = Group.objects.all().order_by('name')
-        return render(request, template_name='group/show_groups.html', context={'groups': groups})
-
-    def post(self, request):
-        name = request.POST.get('name')
-        description = request.POST.get('description')
-        if name:
-            Group.objects.create(name=name, description=description)
-            return redirect('/groups/')
-        else:
-            return HttpResponse('Podaj dane')
+        return render(request, template_name='group/show_groups.html', context={})
 
 
-class ShowGroup(View):
+class ShowGroupView(View):
 
     def get(self, request, group_id):
-        return render(request, 'show_group.html', {'groups': Group.objects.all().order_by('name'),
-                                                   'group': Group.objects.get(id=int(group_id))})
+
+        group = Group.objects.get(pk=group_id)
+        return render(request, 'group/show_group.html', {'group': group})
 
 
 class AddMembers(View):

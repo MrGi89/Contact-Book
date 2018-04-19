@@ -6,14 +6,12 @@
                 <h1>{{ person.first_name }} {{ person.last_name }}</h1>
             </div>
             <div>
-                <h2>Add contact details</h2>
+                <h2 class="center">Are you sure?</h2>
                 <form class="form" action="#" method="POST">
-                    {{ phone_form.as_p }}
+                    {{ form.as_p }}
                     <br>
-                    {{ email_form.as_p }}
-                    <br>
-                    <a href="{% url 'show_person' person.pk %}"><input class="submit" type="button" value="Skip"></a>
-                    <input class="submit" type="submit" value="Save">
+                    <input class="submit" type="submit" value="Yes">
+                    <a href="{% url 'show_person' person.pk %}"><input class="submit" type="button" value="No"></a>
                     {% csrf_token %}
                 </form>
             </div>
