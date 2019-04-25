@@ -27,30 +27,13 @@ class RegisterView(View):
 
     def post(self, request):
 
-        # TODO - register site validation
-
         form = RegisterForm(request.POST)
 
         if form.is_valid():
-            first_name = form.cleaned_data['first_name']
-            last_name = form.cleaned_data['last_name']
-            email = form.cleaned_data['email']
-            password = form.cleaned_data['password']
-            password_confirmation = form.cleaned_data['password_confirmation']
-            user_search = User.objects.filter(email=email)
-
-            if password != password_confirmation:
-                form.add_error('first_name', 'Passwords aren\'t equal')
-
-            if user_search:
-                form.add_error('email', 'This e-mail address is already taken')
-
-            if form.has_error:
-                return render(request, template_name='user/register.html', context={'form': form})
-            else:
-                return HttpResponse('zapisano')
-        else:
-            return HttpResponse('Nie podano wszytskich danych')
+            user = form.save()
+            login(request, user)
+            return HttpResponseRedirect(reverse('show_people'))
+        return render(request, template_name='user/register.html', context={'form': form})
 
 
 class LoginView(View):
@@ -77,6 +60,13 @@ class LoginView(View):
         return render(request, template_name='user/login.html', context={'form': form})
 
 
+class LogoutView(View):
+
+    def get(self, request):
+        logout(request)
+        return redirect('/')
+
+
 class AddPersonView(View):
 
     def get(self, request):
@@ -88,7 +78,9 @@ class AddPersonView(View):
 
         form = AddPersonForm(request.POST)
         if form.is_valid():
-            person = form.save()
+            person = form.save(commit=False)
+            person.user = request.user
+            person.save()
             return HttpResponseRedirect(reverse('add_address', args=(person.id,)))
 
         form.add_error('first_name', 'Please fill in all the necessary fields')
@@ -171,16 +163,16 @@ class ShowPeopleView(View):
 
 class ShowPersonView(View):
 
-    def get(self, request, person_id):
+    def get(self, request, pk):
 
-        person = Person.objects.get(id=person_id)
+        person = Person.objects.get(id=pk)
         return render(request, template_name='person/show_person.html', context={'person': person})
 
 
 class UpdatePersonView(UpdateView):
 
     model = Person
-    fields = '__all__'
+    fields = ('first_name', 'last_name', 'description')
     template_name = 'person/update_person.html'
     
     def form_valid(self, form):
@@ -196,84 +188,20 @@ class UpdatePersonView(UpdateView):
             return reverse_lazy('show_person', kwargs={'person_id': person.id})
 
 
+class EditPersonView(View):
+
+    def get(self, request, pk):
+
+        person = Person.objects.get(id=pk)
+        return render(request, template_name='person/edit_person.html', context={'person': person})
+
+
+
 class DeletePersonView(DeleteView):
 
     model = Person
     template_name = 'person/delete_person.html'
     success_url = reverse_lazy('show_people')
-
-
-class ModifyAddress(View):
-
-    def post(self, request, my_id):
-        address = Address.objects.get(id=int(my_id))
-        city = request.POST.get('city')
-        street = request.POST.get('street')
-        house_number = request.POST.get('house_number')
-        flat_number = request.POST.get('flat_number')
-        if request.POST.get('action') == 'Change':
-            if house_number:
-                try:
-                    house_number = int(house_number)
-                    address.house_number = house_number
-                except ValueError:
-                    return HttpResponse('Błędne dane')
-            if flat_number:
-                try:
-                    flat_number = int(flat_number)
-                    address.flat_number = flat_number
-                except ValueError:
-                    return HttpResponse('Błędne dane')
-            else:
-                address.flat_number = None
-            if city:
-                address.city = city
-            if street:
-                address.street = street
-            address.save()
-            return redirect('/show/{}'.format(address.person_address.id))
-        else:
-            address.delete()
-            return redirect('/show/{}'.format(address.person_address.id))
-
-
-class ModifyNumber(View):
-
-    def post(self, request, my_id):
-        phone = Phone.objects.get(id=int(my_id))
-        user_number = request.POST.get('number')
-        number_type = request.POST.get('option')
-
-        if request.POST.get('action') == 'Change':
-            try:
-                if user_number:
-                    user_number = int(user_number)
-                    phone.number = user_number
-                phone.number_type = int(number_type)
-                phone.save()
-                return redirect('/show/{}'.format(phone.person_number.id))
-            except ValueError:
-                return HttpResponse('Podałeś błędne dane')
-        else:
-            phone.delete()
-            return redirect('/show/{}'.format(phone.person_number.id))
-
-
-class ModifyEmail(View):
-
-    def post(self, request, my_id):
-        email = Email.objects.get(id=int(my_id))
-        user_address = request.POST.get('address')
-        email_type = int(request.POST.get('option'))
-        if request.POST.get('action') == 'Change':
-            if user_address:
-                email.address = user_address
-            email.email_type = email_type
-            email.save()
-            return redirect('/show/{}'.format(email.person_email.id))
-        else:
-            email.delete()
-            return redirect('/show/{}'.format(email.person_email.id))
 
 
 class ShowGroupsView(View):
@@ -318,34 +246,39 @@ class AddMembers(View):
         return redirect('/groups')
 
 
-class AddToGroups(View):
+class AddToGroupsView(View):
 
-    def get(self, request, my_id):
-        groups = Group.objects.all()
-        member = Person.objects.get(id=int(my_id)).group_set.all()
-        belong = []
-        not_belong = []
-        for group in groups:
-            if group in member:
-                belong.append(group)
-            else:
-                not_belong.append(group)
-        return render(request, 'add_to_groups.html', {'belong': belong, 'not_belong': not_belong})
+    def get(self, request, person_id):
+        person = Person.objects.get(pk=person_id)
 
-    def post(self, request, my_id):
-        member = Person.objects.get(id=int(my_id))
-        groups = request.POST.getlist('group')
-        if request.POST.get('action') == 'Add to group':
-            if groups:
-                for group in groups:
-                    Group.objects.get(id=int(group)).members.add(member)
-                return redirect('/')
-            else:
-                return HttpResponse('Nie zaznaczyłeś grupy')
-        elif request.POST.get('action') == 'Add new group':
-            return redirect('/groups')
+        return render(request, template_name='person/add_to_groups.html', context={'person': person})
 
-        return redirect('/')
+
+        # groups = Group.objects.all()
+        # member = Person.objects.get(id=int(my_id)).group_set.all()
+        # belong = []
+        # not_belong = []
+        # for group in groups:
+        #     if group in member:
+        #         belong.append(group)
+        #     else:
+        #         not_belong.append(group)
+        # return render(request, 'person/add_to_groups.html', {'belong': belong, 'not_belong': not_belong})
+        #
+    # def post(self, request, my_id):
+    #     member = Person.objects.get(id=int(my_id))
+    #     groups = request.POST.getlist('group')
+    #     if request.POST.get('action') == 'Add to group':
+    #         if groups:
+    #             for group in groups:
+    #                 Group.objects.get(id=int(group)).members.add(member)
+    #             return redirect('/')
+    #         else:
+    #             return HttpResponse('Nie zaznaczyłeś grupy')
+    #     elif request.POST.get('action') == 'Add new group':
+    #         return redirect('/groups')
+    #
+    #     return redirect('/')
 
 
 class DeleteMember(View):

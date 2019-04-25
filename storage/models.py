@@ -1,10 +1,14 @@
+from django.contrib.auth.models import User
 from django.db import models
+
+user1 = User.objects.get(username='paluch@wp.pl')
 
 
 class Person(models.Model):
     first_name = models.CharField(max_length=64, verbose_name='')
     last_name = models.CharField(max_length=64, verbose_name='')
     description = models.TextField(max_length=200, null=True, verbose_name='', blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
 class Address(models.Model):
@@ -37,3 +41,4 @@ class Group(models.Model):
     name = models.CharField(max_length=128)
     description = models.TextField(null=True)
     members = models.ManyToManyField(Person)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)

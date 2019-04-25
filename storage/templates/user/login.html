@@ -5,12 +5,10 @@
                 <h2>Login to your account</h2>
                 <form class="form" action="#" method="POST">
                     {{ form.as_p }}
-                    <label>
-                        <input class="submit" type="submit" value="Login">
-                    </label>
+                    <br>
+                    <input class="submit" type="submit" value="Login">
                     {% csrf_token %}
                 </form>
             </div>
         </div>
 {% endblock %}
-                                   login.html

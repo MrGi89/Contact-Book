@@ -1,0 +1,18 @@
+{% extends 'person/show_person.html' %}
+{% block details %}
+    <div class="details">
+        <div class="person_content">
+            <div class="person_form">
+                <h1>{{ person.first_name }} {{ person.last_name }}</h1>
+            </div>
+            <div>
+                <h2>Add to groups</h2>
+                <form class="form" action="#" method="POST">
+                    <br>
+                    <input class="submit" type="submit" value="Save">
+                    {% csrf_token %}
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock details %}

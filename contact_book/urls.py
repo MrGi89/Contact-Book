@@ -17,17 +17,14 @@ from django.contrib import admin
 from django.urls import path
 from django.conf.urls import url
 
-from storage.views import ShowPeopleView, AddPersonView, ShowPersonView, UpdatePersonView, ModifyAddress\
-    , ModifyNumber, ModifyEmail, DeletePersonView, ShowGroupsView, AddMembers, AddToGroups, DeleteMember, ModifyGroup\
-    , DeleteGroup, ShowGroupView, WelcomeView, LoginView, RegisterView, AddAddressView, AddContactsView
+from storage.views import ShowPeopleView, AddPersonView, ShowPersonView, UpdatePersonView, DeletePersonView, \
+    ShowGroupsView, AddMembers, AddToGroupsView, DeleteMember, ModifyGroup, DeleteGroup, ShowGroupView, WelcomeView, \
+    LoginView, LogoutView, RegisterView, AddAddressView, AddContactsView, EditPersonView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    url(r'^(?P<my_id>\d+)/modifyAddress$', ModifyAddress.as_view()),
-    url(r'^(?P<my_id>\d+)/modifyNumber$', ModifyNumber.as_view()),
-    url(r'^(?P<my_id>\d+)/modifyEmail$', ModifyEmail.as_view()),
+
     url(r'^groups/addMembers/(?P<my_id>\d+)$', AddMembers.as_view()),
-    url(r'^groups/addToGroups/(?P<my_id>\d+)$', AddToGroups.as_view()),
     url(r'^groups/deleteMember/(?P<group_id>\d+)/(?P<member_id>\d+)$', DeleteMember.as_view()),
     url(r'^groups/modify/(?P<group_id>\d+)/$', ModifyGroup.as_view()),
     url(r'^groups/delete/(?P<group_id>\d+)/$', DeleteGroup.as_view()),
@@ -35,13 +32,15 @@ urlpatterns = [
 
 
     url(r'^$', WelcomeView.as_view(), name='welcome'),
-    url(r'^login/$', LoginView.as_view(), name='login'),
     url(r'^register/$', RegisterView.as_view(), name='register'),
-
+    url(r'^login/$', LoginView.as_view(), name='login'),
+    url(r'^logout/$', LogoutView.as_view(), name='logout'),
 
     url(r'^show/people$', ShowPeopleView.as_view(), name='show_people'),
-    url(r'^show/(?P<person_id>\d+)/$', ShowPersonView.as_view(), name='show_person'),
-    url(r'^update/(?P<pk>\d+)/$', UpdatePersonView.as_view(), name='update_person'),
+    url(r'^show/(?P<pk>\d+)/$', ShowPersonView.as_view(), name='show_person'),
+    # url(r'^update/(?P<pk>\d+)/$', UpdatePersonView.as_view(), name='update_person'),
+    url(r'^update/(?P<pk>\d+)/$', EditPersonView.as_view(), name='update_person'),
+
     url(r'^delete/(?P<pk>\d+)/$', DeletePersonView.as_view(), name='delete_person'),
 
     url(r'^new/person$', AddPersonView.as_view(), name='add_person'),
@@ -51,6 +50,8 @@ urlpatterns = [
 
     url(r'^show/groups/$', ShowGroupsView.as_view(), name='show_groups'),
     url(r'^group/(?P<group_id>\d+)$', ShowGroupView.as_view(), name='show_group'),
+    url(r'^group/addperson/(?P<person_id>\d+)$', AddToGroupsView.as_view(), name='add_to_groups'),
+
 
 ]
 

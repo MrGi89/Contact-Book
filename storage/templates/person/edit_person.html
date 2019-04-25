@@ -4,24 +4,49 @@
             {% block details %}
                 <div class="details">
                     <div class="name">
-                        <h1>{{ person.first_name }} {{ person.last_name }}</h1>
-                        <p>{{ person.description }}</p>
+                        <form method="post">
+                            <label>
+                                <input type="text" name="first_name" value="{{ person.first_name }}">
+                                <input type="text" name="last_name" value="{{ person.last_name }}">
+                            </label>
+                            <label>
+                                <textarea>
+                                    {{ person.description }}
+                                </textarea>
+                            </label>
+                            <label>
+                                <input type="submit" value="save">
+                            </label>
+                        </form>
                     </div>
                     <div class="contacts">
                         <div>
-                            <table class="contacts-table">
-                                <tr>
-                                    <td class="table-header">
-                                        <h2>E-mail addresses</h2>
-                                    </td>
-                                </tr>
-                            {% for email in person.emails.all|dictsort:"email_type" %}
-                                <tr>
-                                    <td class="left">{{ email.get_email_type_display }}</td>
-                                    <td class="right">{{ email.address }}</td>
-                                </tr>
-                            {% endfor %}
-                            </table>
+                            <form method="post">
+                                <table class="contacts-table">
+                                    <tr>
+                                        <td class="table-header">
+                                            <h2>E-mail addresses</h2>
+                                        </td>
+                                    </tr>
+                                {% for email in person.emails.all|dictsort:"email_type" %}
+                                    <tr>
+                                        <td class="left">
+                                            <label>
+                                                <input type="text" name="{{ email.pk }}" value="{{ email.get_email_type_display }}">
+                                            </label>
+                                        </td>
+                                        <td class="right">
+                                            <label>
+                                                <input type="text" name="{{ email.pk }}" value="{{ email.address }}">
+                                            </label>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </table>
+                                <label>
+                                    <input type="submit" value="save">
+                                </label>
+                            </form>
                         </div>
                         <div>
                             <table class="contacts-table">
